@@ -10,5 +10,6 @@
   h1.header {
     text-align: center;
     color: rgb(255, 255, 255);
+    font-size: 3rem;
   }
 </style>

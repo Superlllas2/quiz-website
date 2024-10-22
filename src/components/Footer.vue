@@ -8,10 +8,9 @@
 
 <style scoped>
   h2.footer {
-    text-align: center;
-    position: absolute;
     bottom: 0;
-    width: 100%;
+    text-align: center;
     font-size: 12px;
+    display: none;
   }
 </style>

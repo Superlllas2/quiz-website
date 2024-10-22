@@ -1,22 +1,14 @@
 <script>
-import Header from './components/Header.vue';
-import Footer from './components/Footer.vue';
-import Body from './components/Body.vue';
-
 export default {
   name: 'App',
-  components: {Header, Footer, Body}
 }
 </script>
 
 <template>
   <div id="app">
-    <Header/>
-    <Body/>
-    <Footer/>
+    <router-view></router-view>
   </div>
 </template>
 
-<style scoped>
-
+<style>
 </style>
