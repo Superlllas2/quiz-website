@@ -1,43 +1,12 @@
 <script>
-  import SignupForm from "@/components/SignupForm.vue";
-  import TopicChoice from "@/components/TopicChoice.vue";
-  import Game from "@/components/Game.vue";
-
   export default{
     name: 'Body',
-    components: {SignupForm, TopicChoice, Game},
-    data() {
-      return {
-        showSignUp: true,
-        showTopicsChoice: false,
-        showGame: false
-      }
-    },
-    methods: {
-      toggleSignUp() {
-        this.showSignUp = !this.showSignUp;
-      },
-      toggleTopics() {
-        this.showTopicsChoice = !this.showTopicsChoice;
-      },
-      toggleGame() {
-        this.showGame = !this.showGame;
-      }
-    }
   }
 </script>
 
 <template>
   <div class="body">
-    <div v-if="showSignUp" class="signUpForm">
-      <SignupForm/>
-    </div>
-    <div v-if="showTopicsChoice">
-      <TopicChoice/>
-    </div>
-    <div v-if="showGame">
-      <Game/>
-    </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -59,6 +28,6 @@
   }
 
   div.signUpForm {
-    width: 50%;
+    width: 60%;
   }
 </style>
