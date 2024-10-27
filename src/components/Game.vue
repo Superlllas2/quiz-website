@@ -1,18 +1,38 @@
+<template>
+  <div class="wrapper">
+    <div class="header">
+      <span>Question {{ currentQuestionNumber }}</span>
+      <span>Score: {{ totalScore }}</span>
+    </div>
+
+    <!-- Question Text -->
+    <div class="question">
+      <h2>{{ currentQuestion.text }}</h2>
+    </div>
+
+    <!-- Answer Options -->
+    <div class="answers">
+      <button v-for="(answer, index) in currentQuestion.answers" :key="index" @click="selectAnswer(index)">
+        {{ answer }}
+      </button>
+    </div>
+  </div>
+</template>
+
 <script>
 export default {
   data() {
     return {
       currentQuestionNumber: 1,
       totalScore: 0,
-      timeLeft: 10,
+      timeLeft: 100000,
       timer: null,
       currentQuestion: {
         text: 'What is the capital of France?',
         answers: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-        correctAnswerIndex: 2 // The correct answer (Paris)
+        correctAnswerIndex: 2
       },
       questions: [
-        // You can add more static questions for now to test
         {
           text: 'What is the capital of France?',
           answers: ['Berlin', 'Madrid', 'Paris', 'Rome'],
@@ -33,7 +53,6 @@ export default {
   },
   methods: {
     startTimer() {
-      // Start a countdown timer
       this.timeLeft = 10;
       this.timer = setInterval(() => {
         if (this.timeLeft > 0) {
@@ -44,94 +63,73 @@ export default {
       }, 1000);
     },
     timeExpired() {
-      // Handle time expiration, move to next question
       clearInterval(this.timer);
       this.nextQuestion();
     },
     selectAnswer(index) {
-      // Check if the selected answer is correct
       if (index === this.currentQuestion.correctAnswerIndex) {
-        this.totalScore += 10; // Add to total score if the answer is correct
+        this.totalScore += 10;
       }
-      this.nextQuestion(); // Move to the next question
+      this.nextQuestion();
     },
     nextQuestion() {
-      clearInterval(this.timer); // Clear the current timer
+      clearInterval(this.timer);
       if (this.currentQuestionNumber < this.questions.length) {
         this.currentQuestionNumber++;
-        this.currentQuestion = this.questions[this.currentQuestionNumber - 1]; // Load the next question
-        this.startTimer(); // Restart the timer for the new question
+        this.currentQuestion = this.questions[this.currentQuestionNumber - 1];
+        this.startTimer();
       } else {
         alert('Quiz complete! Your score is: ' + this.totalScore);
-        // Optionally, you could reset the game or navigate to a results page
       }
     }
   },
   mounted() {
-    // Start the timer when the component mounts
-    this.startTimer();
+    // this.startTimer();
   },
   beforeDestroy() {
-    // Clear the timer if the component is destroyed (e.g., user navigates away)
     clearInterval(this.timer);
   }
 };
 </script>
 
-<template>
-  <div class="game">
-    <!-- Question Number -->
-    <h1>Question {{ currentQuestionNumber }}</h1>
-
-    <!-- Timer -->
-    <div class="timer">
-      <span>Time left: {{ timeLeft }}s</span>
-    </div>
-
-    <!-- Total Score -->
-    <div class="score">
-      <span>Total Score: {{ totalScore }}</span>
-    </div>
-
-    <!-- Question Text -->
-    <div class="question">
-      <h2>{{ currentQuestion.text }}</h2>
-    </div>
-
-    <!-- Answer Options -->
-    <div class="answers">
-      <button v-for="(answer, index) in currentQuestion.answers" :key="index" @click="selectAnswer(index)">
-        {{ answer }}
-      </button>
-    </div>
-  </div>
-</template>
-
 <style scoped>
-.game {
-  max-width: 600px;
-  margin: 0 auto;
+.wrapper {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  padding: 20px 0;
+  background-color: black;
+}
+
+.question {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 20px 0;
   text-align: center;
 }
 
-.timer, .score {
-  margin: 10px 0;
-}
-
 .answers {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   margin-top: 20px;
+
 }
 
 button {
-  padding: 10px 20px;
-  background-color: #3498db;
-  color: white;
-  border: none;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #333;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
+  background-color: #3498db;
+  transition: background-color 0.2s ease;
 }
 
 button:hover {
