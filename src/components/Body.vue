@@ -18,16 +18,11 @@
     margin: auto;
     background-color: #333;
     border-radius: 20px;
-    display: flex;
     justify-content: center;
-    box-shadow: rgba(134, 134, 190, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    box-shadow: rgba(134, 134, 190, 0.25) 0 13px 27px -5px, rgba(0, 0, 0, 0.3) 0 8px 16px -8px;
   }
 
   div.body h1 {
     text-align: center;
-  }
-
-  div.signUpForm {
-    width: 60%;
   }
 </style>

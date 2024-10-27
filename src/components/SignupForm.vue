@@ -16,17 +16,17 @@ export default {
       const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
       this.emailValid = emailPattern.test(this.email);
 
-      if (this.password === this.repeatPassword && this.password.length !== 0 && this.password.length >= 6) {
+      if (this.password === this.repeatPassword && this.password.length >= 6) {
         this.passwordsSame = true;
-        console.log("Passwords same")
+        console.log("Passwords match");
       } else {
-        console.log("Passwords NOT same")
+        console.log("Passwords do not match");
         this.passwordsSame = false;
       }
 
       if (this.passwordsSame && this.emailValid) {
         console.log("Form is valid");
-        this.navigateToGame()
+        this.navigateToGame();
       } else {
         console.log("Form is not valid");
       }
@@ -35,7 +35,7 @@ export default {
       this.$router.push('/create');
     }
   }
-}
+};
 </script>
 
 <template>
@@ -65,7 +65,11 @@ export default {
 form {
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 100%;
+  max-width: 400px; /* Optional: Set max width for better readability */
+  margin: auto;
+  padding: 20px;
+  min-height: 600px;
 }
 
 .error {
@@ -84,36 +88,41 @@ h1.signUp {
 }
 
 .field {
-  margin-bottom: 30px; /* Add some space between fields */
+  margin-bottom: 20px;
 }
 
 label {
-  display: block; /* Ensure label is a block element, so it takes up full width */
-  margin-bottom: 5px; /* Add space between the label and the input field */
+  display: block;
+  margin-bottom: 5px;
 }
 
 input[type="email"],
 input[type="password"] {
-  width: 100%; /* Make input fields take up full width */
+  width: 100%;
   padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .terms {
   display: flex;
   align-items: center;
-
-  input {
-    margin-left: 10%;
-  }
-
-  label {
-    margin: 0 auto;
-  }
+  margin-bottom: 20px;
 }
 
 button {
-  margin-top: 20%;
-  padding: 5% 0;
+  width: 100%;
+  padding: 10px;
   font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2980b9;
 }
 </style>
