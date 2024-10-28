@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
     <div class="header">
-      <span>Question {{ currentQuestionNumber }}</span>
-      <span>Score: {{ totalScore }}</span>
+      <span class="title">Question {{ currentQuestionNumber }}</span>
+      <span class="score">Score: {{ totalScore }}</span>
     </div>
 
     <!-- Question Text -->
@@ -94,21 +94,29 @@ export default {
 
 <style scoped>
 .wrapper {
-  width: 90%;
+  //max-width: 600px;
+  margin: auto;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
 }
 
 .header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   font-size: 1rem;
-  padding: 20px 0;
-  background-color: black;
+  padding: 1.5rem;
+  color: white;
+  border-radius: 10px 10px 0 0;
+  border-bottom: rgba(0, 0, 0, 0.1) solid 8px;
 }
 
 .question {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin: 20px 0;
   text-align: center;
@@ -119,7 +127,6 @@ export default {
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-top: 20px;
-
 }
 
 button {
@@ -129,10 +136,12 @@ button {
   border-radius: 5px;
   cursor: pointer;
   background-color: #3498db;
+  color: white;
   transition: background-color 0.2s ease;
 }
 
 button:hover {
   background-color: #2980b9;
 }
+
 </style>
