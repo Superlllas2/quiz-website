@@ -94,14 +94,12 @@ export default {
 
 <style scoped>
 .wrapper {
-  //max-width: 600px;
   margin: auto;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  box-sizing: border-box;
+  justify-content: space-between;
 }
 
 .header {
@@ -120,17 +118,21 @@ export default {
   font-weight: bold;
   margin: 20px 0;
   text-align: center;
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .answers {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin-top: 20px;
+  margin: 10px;
 }
 
 button {
-  padding: 10px;
+  padding: 3rem 0;
   font-size: 1rem;
   border: 2px solid #333;
   border-radius: 5px;
@@ -143,5 +145,4 @@ button {
 button:hover {
   background-color: #2980b9;
 }
-
 </style>

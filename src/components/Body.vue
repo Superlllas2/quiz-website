@@ -12,6 +12,7 @@
 
 <style scoped>
   div.body {
+    max-width: 800px;
     width: 50%;
     height: 80vh;
     align-content: center;
