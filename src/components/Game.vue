@@ -7,17 +7,18 @@
 
     <!-- Question Text -->
     <div class="question">
-      <h2>{{ currentQuestion.text }}</h2>
+      <h2>{{ currentQuestion.question }}</h2> <!-- Updated to currentQuestion.question -->
     </div>
 
     <!-- Answer Options -->
     <div class="answers">
-      <button v-for="(answer, index) in currentQuestion.answers" :key="index" @click="selectAnswer(index)">
-        {{ answer }}
+      <button v-for="(option, index) in currentQuestion.options" :key="index" @click="selectAnswer(index)">
+        {{ option }} <!-- Updated to currentQuestion.options -->
       </button>
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -45,10 +46,17 @@ export default {
           topic: 'science', // Hardcoded topic, modify as needed
           numberOfQuestions: 9
         });
+
         this.questions = response.data; // Store all questions received from the backend
+        console.log("Fetched Questions:", this.questions); // Check the data structure
 
         // Load the first question
-        this.currentQuestion = this.questions[this.currentQuestionIndex];
+        if (this.questions.length > 0) {
+          this.currentQuestion = this.questions[this.currentQuestionIndex];
+          console.log("First Current Question:", this.currentQuestion); // Verify current question
+        } else {
+          console.warn("No questions were fetched from the backend.");
+        }
       } catch (error) {
         console.error("Failed to fetch questions from backend:", error);
       }
@@ -80,6 +88,7 @@ export default {
         this.currentQuestionIndex++;
         this.currentQuestion = this.questions[this.currentQuestionIndex];
         this.currentQuestionNumber++;
+        console.log("Next Current Question:", this.currentQuestion); // Log each new question
         this.startTimer(); // Restart timer for the next question
       } else {
         alert('Quiz complete! Your score is: ' + this.totalScore);
