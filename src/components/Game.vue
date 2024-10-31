@@ -1,4 +1,5 @@
 <template>
+  <div v-if="loading" class="loader">Loading...</div>
   <div class="wrapper" v-if="questions.length > 0">
     <div class="header">
       <span class="title">Question {{ currentQuestionNumber }}</span>
@@ -26,39 +27,41 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      loading: true, // Loader state
       currentQuestionNumber: 1,
       totalScore: 0,
       timeLeft: 100000,
       timer: null,
-      questions: [], // Store all fetched questions here
-      currentQuestionIndex: 0, // Track the current question index
+      questions: [],
+      currentQuestionIndex: 0,
       currentQuestion: {
-        text: '',
-        answers: [],
+        question: '',
+        options: [],
         correctAnswerIndex: null
       }
     };
   },
   methods: {
     async fetchQuestionsFromBackend() {
+      this.loading = true; // Start loading
+
       try {
         const response = await axios.post('http://localhost:5001/api/questions', {
-          topic: 'science', // Hardcoded topic, modify as needed
+          topic: 'science',
           numberOfQuestions: 9
         });
-
-        this.questions = response.data; // Store all questions received from the backend
-        console.log("Fetched Questions:", this.questions); // Check the data structure
+        this.questions = response.data;
 
         // Load the first question
         if (this.questions.length > 0) {
           this.currentQuestion = this.questions[this.currentQuestionIndex];
-          console.log("First Current Question:", this.currentQuestion); // Verify current question
         } else {
-          console.warn("No questions were fetched from the backend.");
+          console.warn("No questions were fetched from backend.");
         }
       } catch (error) {
         console.error("Failed to fetch questions from backend:", error);
+      } finally {
+        this.loading = false; // Stop loading once response is received
       }
     },
     startTimer() {
@@ -84,19 +87,17 @@ export default {
     nextQuestion() {
       clearInterval(this.timer);
       if (this.currentQuestionIndex < this.questions.length - 1) {
-        // Move to the next question
         this.currentQuestionIndex++;
         this.currentQuestion = this.questions[this.currentQuestionIndex];
         this.currentQuestionNumber++;
-        console.log("Next Current Question:", this.currentQuestion); // Log each new question
-        this.startTimer(); // Restart timer for the next question
+        this.startTimer();
       } else {
         alert('Quiz complete! Your score is: ' + this.totalScore);
       }
     }
   },
   async mounted() {
-    await this.fetchQuestionsFromBackend(); // Load all questions when the component mounts
+    await this.fetchQuestionsFromBackend();
     if (this.questions.length > 0) this.startTimer();
   },
   beforeDestroy() {
@@ -113,6 +114,21 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.loader {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #3498db;
+  padding: 20px;
+  animation: spin 1s linear infinite;
+}
+
+/* Simple spinning animation for the loader */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .header {
