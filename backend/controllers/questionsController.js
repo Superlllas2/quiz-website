@@ -1,15 +1,24 @@
 // backend/controllers/questionsController.js
-const axios = require('axios');
+import axios from 'axios';
 
-exports.getQuestion = async (req, res) => {
+export const getQuestion = async (req, res) => {
     const { topic } = req.body;
 
     try {
         const response = await axios.post(
-            'https://api.openai.com/v1/completions',
+            'https://api.openai.com/v1/chat/completions',
             {
-                model: "text-davinci-003",
-                prompt: `Generate a multiple-choice question about ${topic} with 4 options. Format: { "question": "text", "options": ["opt1", "opt2", "opt3", "opt4"], "answer_index": 2 }`,
+                model: "gpt-3.5-turbo",  // Use the new model
+                messages: [
+                    {
+                        role: "system",
+                        content: "You are a helpful assistant that generates multiple-choice questions."
+                    },
+                    {
+                        role: "user",
+                        content: `Generate a multiple-choice question about ${topic} with 4 options. Format: { "question": "text", "options": ["opt1", "opt2", "opt3", "opt4"], "answer_index": 2 }`
+                    }
+                ],
                 max_tokens: 100,
                 temperature: 0.5
             },
@@ -21,9 +30,9 @@ exports.getQuestion = async (req, res) => {
         );
 
         // Send the question data back to the frontend
-        res.json(JSON.parse(response.data.choices[0].text));
+        res.json(JSON.parse(response.data.choices[0].message.content));
     } catch (error) {
-        console.error("Error fetching question:", error);
+        console.error("Error fetching question:", error.response ? error.response.data : error.message);
         res.status(500).json({ error: 'Failed to fetch question' });
     }
 };

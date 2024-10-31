@@ -1,9 +1,8 @@
 // backend/routes/questionsRoute.js
-const express = require('express');
-const router = express.Router();
-const { getQuestion } = require('../controllers/questionsController');
+import express from 'express';
+import { getQuestion } from '../controllers/questionsController.js';
 
-// Define the route to get questions
+const router = express.Router();
 router.post('/', getQuestion);
 
-module.exports = router;
+export default router;

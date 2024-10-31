@@ -1,16 +1,18 @@
 // backend/server.js
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const questionsRoute = require('./routes/questionsRoute');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import questionsRoute from './routes/questionsRoute.js';
+
+dotenv.config({ path: './backend/.env' });
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
-app.use(cors()); // Enable CORS
-app.use(express.json()); // Parse JSON request bodies
+// Enable CORS
+app.use(cors()); // This will allow all origins. Adjust if needed.
 
-// Use routes
+app.use(express.json());
 app.use('/api/questions', questionsRoute);
 
 app.listen(PORT, () => {

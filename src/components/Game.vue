@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -27,31 +29,32 @@ export default {
       totalScore: 0,
       timeLeft: 100000,
       timer: null,
+      selectedTopic: 'science', // Example topic, modify as needed
       currentQuestion: {
-        text: 'What is the capital of France?',
-        answers: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-        correctAnswerIndex: 2
-      },
-      questions: [
-        {
-          text: 'What is the capital of France?',
-          answers: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-          correctAnswerIndex: 2
-        },
-        {
-          text: 'What is 2 + 2?',
-          answers: ['3', '4', '5', '6'],
-          correctAnswerIndex: 1
-        },
-        {
-          text: 'Which planet is known as the Red Planet?',
-          answers: ['Earth', 'Mars', 'Jupiter', 'Saturn'],
-          correctAnswerIndex: 1
-        }
-      ]
+        text: '',
+        answers: [],
+        correctAnswerIndex: null
+      }
     };
   },
   methods: {
+    async fetchQuestionFromBackend() {
+      try {
+        const response = await axios.post('http://localhost:5001/api/questions', {
+          topic: this.selectedTopic // Send the selected topic to the backend
+        });
+        const generatedQuestion = response.data;
+
+        // Update the current question with the data received from the backend
+        this.currentQuestion = {
+          text: generatedQuestion.question,
+          answers: generatedQuestion.options,
+          correctAnswerIndex: generatedQuestion.correctAnswerIndex
+        };
+      } catch (error) {
+        console.error("Failed to fetch question from backend:", error);
+      }
+    },
     startTimer() {
       this.timeLeft = 10;
       this.timer = setInterval(() => {
@@ -72,19 +75,16 @@ export default {
       }
       this.nextQuestion();
     },
-    nextQuestion() {
+    async nextQuestion() {
       clearInterval(this.timer);
-      if (this.currentQuestionNumber < this.questions.length) {
-        this.currentQuestionNumber++;
-        this.currentQuestion = this.questions[this.currentQuestionNumber - 1];
-        this.startTimer();
-      } else {
-        alert('Quiz complete! Your score is: ' + this.totalScore);
-      }
+      this.currentQuestionNumber++;
+      await this.fetchQuestionFromBackend(); // Fetch a new question from backend
+      this.startTimer();
     }
   },
   mounted() {
-    // this.startTimer();
+    this.fetchQuestionFromBackend(); // Load the first question when the component mounts
+    this.startTimer();
   },
   beforeDestroy() {
     clearInterval(this.timer);
