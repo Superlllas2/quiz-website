@@ -53,6 +53,9 @@ export default {
       <label>Confirm password:</label>
       <input type="password" required v-model="repeatPassword" :class="{ 'error': !passwordsSame }">
     </div>
+    <div class="signIn">
+      <p>Already have an account? <router-link to="/login" class="logIn-link">Log-in</router-link></p>
+    </div>
     <div class="terms">
       <input type="checkbox" v-model="terms" required>
       <label> accept terms and conditions</label>
@@ -91,6 +94,18 @@ h1.signUp {
   margin-bottom: 20px;
 }
 
+.field:nth-child(4) {
+  margin-bottom: 1rem;
+}
+
+.logIn-link {
+  color: #3498db;
+}
+
+.logIn-link:hover {
+  color: #2980b9;
+}
+
 label {
   display: block;
   margin-bottom: 5px;
@@ -102,6 +117,15 @@ input[type="password"] {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.signIn {
+  text-align: center;
+  margin-bottom: 1rem;
+
+  p {
+    margin: 0;
+  }
 }
 
 .terms {
