@@ -32,7 +32,7 @@ export const getQuestions = async (req, res) => {
         console.log("OpenAI Raw Content:", rawContent); // Log the response for debugging
 
         // Use a regular expression to extract each JSON object individually
-        const jsonObjects = rawContent.match(/\{.*?\}/g); // Matches each JSON object
+        const jsonObjects = rawContent.match(/\{.*?}/g); // Matches each JSON object
 
         // Parse each JSON object and add it to an array
         const generatedQuestions = jsonObjects.map(obj => JSON.parse(obj));
