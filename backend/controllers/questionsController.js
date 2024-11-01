@@ -1,4 +1,3 @@
-// backend/controllers/questionsController.js
 import axios from 'axios';
 
 export const getQuestions = async (req, res) => {
@@ -12,7 +11,7 @@ export const getQuestions = async (req, res) => {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a helpful assistant that generates unique multiple-choice questions."
+                        content: "You are a helpful assistant that generates multiple-choice questions."
                     },
                     {
                         role: "user",
@@ -29,7 +28,15 @@ export const getQuestions = async (req, res) => {
             }
         );
 
-        const generatedQuestions = JSON.parse(response.data.choices[0].message.content);
+        const rawContent = response.data.choices[0].message.content;
+        console.log("OpenAI Raw Content:", rawContent); // Log the response for debugging
+
+        // Use a regular expression to extract each JSON object individually
+        const jsonObjects = rawContent.match(/\{.*?\}/g); // Matches each JSON object
+
+        // Parse each JSON object and add it to an array
+        const generatedQuestions = jsonObjects.map(obj => JSON.parse(obj));
+
         res.json(generatedQuestions);
     } catch (error) {
         console.error("Error fetching questions:", error.response ? error.response.data : error.message);
