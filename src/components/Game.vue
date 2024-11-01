@@ -37,7 +37,7 @@ export default {
       currentQuestion: {
         question: '',
         options: [],
-        correctAnswerIndex: null
+        answer_index: null
       }
     };
   },
@@ -86,7 +86,7 @@ export default {
       this.nextQuestion();
     },
     selectAnswer(index) {
-      if (index === this.currentQuestion.correctAnswerIndex) {
+      if (index === this.currentQuestion.answer_index) {
         this.totalScore += 10;
       }
       this.nextQuestion();
