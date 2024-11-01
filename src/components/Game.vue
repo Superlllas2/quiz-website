@@ -14,7 +14,7 @@
     <!-- Answer Options -->
     <div class="answers">
       <button v-for="(option, index) in currentQuestion.options" :key="index" @click="selectAnswer(index)">
-        {{ option }} <!-- Updated to currentQuestion.options -->
+        {{ option }}
       </button>
     </div>
   </div>
@@ -45,9 +45,16 @@ export default {
     async fetchQuestionsFromBackend() {
       this.loading = true; // Start loading
 
+      // Get topics and difficulty from route query parameters
+      const { topic1, topic2, topic3, difficulty } = this.$route.query;
+
+      // Combine the topics for a meaningful API request
+      const topics = [topic1, topic2, topic3].filter(Boolean).join(', ');
+
       try {
         const response = await axios.post('http://localhost:5001/api/questions', {
-          topic: 'science',
+          topics, // Send topics as a combined string
+          difficulty, // Send difficulty as chosen by the user
           numberOfQuestions: 9
         });
         this.questions = response.data;

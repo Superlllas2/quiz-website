@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 export const getQuestions = async (req, res) => {
-    const { topic = "science", numberOfQuestions = 9 } = req.body; // Default to "science" and 9 questions
+    const { topics, difficulty, numberOfQuestions } = req.body;
 
     try {
         const response = await axios.post(
@@ -16,10 +16,10 @@ export const getQuestions = async (req, res) => {
                     },
                     {
                         role: "user",
-                        content: `Generate ${numberOfQuestions} unique multiple-choice questions about ${topic} with 4 answer options each. Output only a JSON array with no explanations or formatting.`
+                        content: `Generate ${numberOfQuestions} unique multiple-choice questions about the following topics: ${topics}. Difficulty level should be ${difficulty}. Format each question as: { "question": "text", "options": ["opt1", "opt2", "opt3", "opt4"], "answer_index": 2 }`
                     }
                 ],
-                max_tokens: 1500,
+                max_tokens: 1000,
                 temperature: 0.5
             },
             {
@@ -29,20 +29,7 @@ export const getQuestions = async (req, res) => {
             }
         );
 
-        let generatedQuestions;
-        let responseContent = response.data.choices[0].message.content;
-
-        // Remove code block formatting (e.g., ```json at the start and ``` at the end)
-        responseContent = responseContent.replace(/```json\s*|```/g, '');
-
-        try {
-            // Parse the cleaned response content
-            generatedQuestions = JSON.parse(responseContent);
-        } catch (parseError) {
-            console.error("Error parsing OpenAI response:", parseError);
-            return res.status(500).json({ error: 'Failed to parse response from OpenAI' });
-        }
-
+        const generatedQuestions = JSON.parse(response.data.choices[0].message.content);
         res.json(generatedQuestions);
     } catch (error) {
         console.error("Error fetching questions:", error.response ? error.response.data : error.message);

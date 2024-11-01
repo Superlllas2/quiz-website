@@ -24,7 +24,16 @@ export default {
       }
     },
     navigateToGame() {
-      this.$router.push('/game');
+      // Pass topics and difficulty as route query parameters
+      this.$router.push({
+        path: '/game',
+        query: {
+          topic1: this.topic1,
+          topic2: this.topic2,
+          topic3: this.topic3,
+          difficulty: this.selectedOption
+        }
+      });
     }
   }
 }
