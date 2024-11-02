@@ -1,4 +1,6 @@
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -30,6 +32,21 @@ export default {
     },
     navigateToCreate() {
       this.$router.push('/create');
+    },
+    async loginUser() {
+      try {
+        const response = await axios.post('http://localhost:5001/api/users/login', {
+          email: this.email,
+          password: this.password,
+        });
+
+        if (response.data.message === "Logged in successfully") {
+          this.$router.push('/create'); // Redirect to '/create'
+        }
+      } catch (error) {
+        console.error(error.response ? error.response.data.message : error.message);
+        alert(error.response.data.message || "Login failed");
+      }
     }
   }
 };

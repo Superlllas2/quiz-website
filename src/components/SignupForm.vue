@@ -1,4 +1,6 @@
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -33,6 +35,21 @@ export default {
     },
     navigateToGame() {
       this.$router.push('/create');
+    },
+    async registerUser() {
+      try {
+        const response = await axios.post('http://localhost:5001/api/users/register', {
+          email: this.email,
+          password: this.password,
+        });
+
+        if (response.data.message === "User registered successfully") {
+          this.$router.push('/create'); // Redirect to '/create'
+        }
+      } catch (error) {
+        console.error(error.response ? error.response.data.message : error.message);
+        alert(error.response.data.message || "Registration failed");
+      }
     }
   }
 };

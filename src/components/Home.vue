@@ -2,7 +2,7 @@
 export default {
   methods: {
     navigateToAbout() {
-      this.$router.push('/signup');
+      this.$router.push('/login');
     }
   }
 };
