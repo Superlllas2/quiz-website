@@ -7,48 +7,43 @@ export default {
       email: '',
       password: '',
       repeatPassword: '',
-      terms: 'false',
-      passwordsSame: 'false',
+      termsAccepted: false,
       emailValid: true,
       passwordValid: true,
-    }
+      passwordsSame: true,
+    };
   },
   methods: {
-    checkPassword() {
+    validateForm() {
       const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
       this.emailValid = emailPattern.test(this.email);
+      this.passwordValid = this.password.length >= 6;
+      this.passwordsSame = this.password === this.repeatPassword;
 
-      if (this.password === this.repeatPassword && this.password.length >= 6) {
-        this.passwordsSame = true;
-        console.log("Passwords match");
-      } else {
-        console.log("Passwords do not match");
-        this.passwordsSame = false;
+      if (!this.termsAccepted) {
+        alert("You must accept the terms and conditions");
       }
 
-      if (this.passwordsSame && this.emailValid) {
-        console.log("Form is valid");
-        this.navigateToGame();
-      } else {
-        console.log("Form is not valid");
-      }
-    },
-    navigateToGame() {
-      this.$router.push('/create');
+      return this.emailValid && this.passwordValid && this.passwordsSame && this.termsAccepted;
     },
     async registerUser() {
+      if (!this.validateForm()) {
+        return; // If form validation fails, exit
+      }
+
       try {
-        const response = await axios.post('http://localhost:5001/api/users/register', {
+        const response = await axios.post('http://localhost:5001/api/auth/register', {
           email: this.email,
           password: this.password,
         });
 
         if (response.data.message === "User registered successfully") {
-          this.$router.push('/create'); // Redirect to '/create'
+          alert("Registration successful!");
+          this.$router.push('/login'); // Redirect to '/login' after registration
         }
       } catch (error) {
-        console.error(error.response ? error.response.data.message : error.message);
-        alert(error.response.data.message || "Registration failed");
+        console.error("Registration error:", error.response ? error.response.data.message : error.message);
+        alert(error.response?.data?.message || "Registration failed");
       }
     }
   }
@@ -56,7 +51,7 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="checkPassword">
+  <form @submit.prevent="registerUser"> <!-- Call registerUser directly -->
     <h1 class="signUp">Sign up</h1>
     <div class="field">
       <label>Email:</label>
@@ -64,7 +59,7 @@ export default {
     </div>
     <div class="field">
       <label>Password:</label>
-      <input type="password" required v-model="password" :class="{ 'error': !passwordsSame }">
+      <input type="password" required v-model="password" :class="{ 'error': !passwordValid }">
     </div>
     <div class="field">
       <label>Confirm password:</label>
@@ -74,10 +69,10 @@ export default {
       <p>Already have an account? <router-link to="/login" class="logIn-link">Log-in</router-link></p>
     </div>
     <div class="terms">
-      <input type="checkbox" v-model="terms" required>
-      <label> accept terms and conditions</label>
+      <input type="checkbox" v-model="termsAccepted" required>
+      <label>Accept terms and conditions</label>
     </div>
-    <button type="submit">Play</button>
+    <button type="submit">Sign Up</button>
   </form>
 </template>
 

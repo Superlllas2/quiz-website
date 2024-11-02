@@ -11,41 +11,37 @@ export default {
     };
   },
   methods: {
-    checkLogin() {
+    async checkLogin() {
+      // Validate email format
       const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
       this.emailValid = emailPattern.test(this.email);
 
-      if (this.password.length >= 6) {
-        this.passwordValid = true;
-        console.log("Password is valid");
-      } else {
-        console.log("Password is invalid");
-        this.passwordValid = false;
-      }
+      // Validate password length
+      this.passwordValid = this.password.length >= 6;
 
+      // If valid, attempt to log in
       if (this.emailValid && this.passwordValid) {
-        console.log("Form is valid");
-        this.navigateToCreate();
+        await this.loginUser();
       } else {
         console.log("Form is not valid");
       }
     },
-    navigateToCreate() {
-      this.$router.push('/create');
-    },
     async loginUser() {
       try {
-        const response = await axios.post('http://localhost:5001/api/users/login', {
+        const response = await axios.post('http://localhost:5001/api/auth/login', {
           email: this.email,
           password: this.password,
         });
 
+        // Save token to localStorage
+        localStorage.setItem('token', response.data.token);
+
         if (response.data.message === "Logged in successfully") {
-          this.$router.push('/create'); // Redirect to '/create'
+          this.$router.push('/create'); // Redirect to '/create' after login
         }
       } catch (error) {
         console.error(error.response ? error.response.data.message : error.message);
-        alert(error.response.data.message || "Login failed");
+        alert(error.response?.data.message || "Login failed");
       }
     }
   }

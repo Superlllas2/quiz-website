@@ -1,4 +1,6 @@
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -11,6 +13,9 @@ export default {
       selectedOption: '', // Selected value from the dropdown
       options: ['Friendly', 'Easy', 'Intermediate', 'Hard', 'Immortal'] // Dropdown options
     }
+  },
+  mounted() {
+    this.fetchProtectedData();
   },
   methods: {
     checkFields() {
@@ -34,6 +39,19 @@ export default {
           difficulty: this.selectedOption
         }
       });
+    },
+    async fetchProtectedData() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:5001/api/protected/create', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log('Protected data:', response.data);
+      } catch (error) {
+        console.error('Failed to fetch protected data:', error);
+      }
     }
   }
 }

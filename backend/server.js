@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import connectDB from './db.js';
 import questionsRoute from './routes/questionsRoute.js';
 import userRoutes from './routes/userRoutes.js';
+import protectedRoute from './routes/protectedRoute.js';
 
 
 dotenv.config({ path: './backend/.env' });
@@ -23,6 +24,7 @@ app.use(cors()); // This will allow all origins. Adjust if needed.
 app.use(express.json());
 app.use('/api/questions', questionsRoute);
 app.use('/api/auth', userRoutes);
+app.use('/api', protectedRoute);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

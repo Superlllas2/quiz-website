@@ -21,11 +21,13 @@ const routes = [
     },
     {
         path: "/create",
-        component: TopicChoice
+        component: TopicChoice,
+        meta: { requiresAuth: true }
     },
     {
         path: "/game",
-        component: Game
+        component: Game,
+        meta: { requiresAuth: true }
     }
     // {
     //     path: '*',
@@ -36,6 +38,18 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+});
+
+router.beforeEach((to, from, next) => {
+    const isAuthenticated = !!localStorage.getItem('token'); // Check if a token is stored
+
+    if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+        // Redirect to log in if trying to access a protected route without being authenticated
+        next('/login');
+    } else {
+        // Otherwise, proceed to the route
+        next();
+    }
 });
 
 export default router;
