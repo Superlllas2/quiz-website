@@ -25,6 +25,8 @@ app.use(express.json());
 app.use('/api/questions', questionsRoute);
 app.use('/api/auth', userRoutes);
 app.use('/api', protectedRoute);
+app.use('/api/protected', protectedRoute);
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
