@@ -153,7 +153,7 @@ export default {
 .question {
   font-size: 1.5rem;
   font-weight: bold;
-  margin: 20px 0;
+  margin: 20px 10px;
   text-align: center;
   min-height: 350px;
   display: flex;
