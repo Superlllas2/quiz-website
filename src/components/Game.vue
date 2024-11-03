@@ -22,7 +22,7 @@
 
 
 <script>
-import axios from 'axios';
+import apiClient from '../../src/api.js'
 
 export default {
   data() {
@@ -52,7 +52,7 @@ export default {
       const topics = [topic1, topic2, topic3].filter(Boolean).join(', ');
 
       try {
-        const response = await axios.post('http://localhost:5001/api/questions', {
+        const response = await apiClient.post('http://localhost:5001/api/questions', {
           topics, // Send topics as a combined string
           difficulty, // Send difficulty as chosen by the user
           numberOfQuestions: 9

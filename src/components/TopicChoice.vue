@@ -1,5 +1,5 @@
 <script>
-import axios from "axios";
+import apiClient from '../../src/api.js'
 
 export default {
   data() {
@@ -43,7 +43,7 @@ export default {
     async fetchProtectedData() {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5001/api/protected/create', {
+        const response = await apiClient.get('http://localhost:5001/api/protected/create', {
           headers: {
             Authorization: `Bearer ${token}`
           }

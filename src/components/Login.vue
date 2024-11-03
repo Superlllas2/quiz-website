@@ -1,5 +1,5 @@
 <script>
-import axios from "axios";
+import apiClient from '../../src/api.js'
 
 export default {
   data() {
@@ -28,10 +28,11 @@ export default {
     },
     async loginUser() {
       try {
-        const response = await axios.post('http://localhost:5001/api/auth/login', {
+        const response = await apiClient.post('http://localhost:5001/api/auth/login', {
           email: this.email,
           password: this.password,
         });
+
 
         // Save token to localStorage
         localStorage.setItem('token', response.data.token);

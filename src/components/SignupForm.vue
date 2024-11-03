@@ -1,5 +1,5 @@
 <script>
-import axios from "axios";
+import apiClient from '../../src/api.js'
 
 export default {
   data() {
@@ -32,7 +32,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:5001/api/auth/register', {
+        const response = await apiClient.post('http://localhost:5001/api/auth/register', {
           email: this.email,
           password: this.password,
         });
