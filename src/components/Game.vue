@@ -8,18 +8,22 @@
 
     <!-- Question Text -->
     <div class="question">
-      <h2>{{ currentQuestion.question }}</h2> <!-- Updated to currentQuestion.question -->
+      <h2>{{ currentQuestion.question }}</h2>
     </div>
 
-    <!-- Answer Options -->
-    <div class="answers">
-      <button v-for="(option, index) in currentQuestion.options" :key="index" @click="selectAnswer(index)">
-        {{ option }}
-      </button>
+    <!-- Answer Options with Timer in Center -->
+    <div class="answer-timer-wrapper">
+      <div class="answers">
+        <button v-for="(option, index) in currentQuestion.options" :key="index" @click="selectAnswer(index)">
+          {{ option }}
+        </button>
+      </div>
+      <div class="timer">
+        <span>{{ timeLeft }}</span>
+      </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import apiClient from '../../src/api.js'
@@ -30,7 +34,8 @@ export default {
       loading: true, // Loader state
       currentQuestionNumber: 1,
       totalScore: 0,
-      timeLeft: 100000,
+      defaultTime: 15,
+      timeLeft: this.defaultTime,
       timer: null,
       questions: [],
       currentQuestionIndex: 0,
@@ -43,23 +48,19 @@ export default {
   },
   methods: {
     async fetchQuestionsFromBackend() {
-      this.loading = true; // Start loading
+      this.loading = true;
 
-      // Get topics and difficulty from route query parameters
       const { topic1, topic2, topic3, difficulty } = this.$route.query;
-
-      // Combine the topics for a meaningful API request
       const topics = [topic1, topic2, topic3].filter(Boolean).join(', ');
 
       try {
         const response = await apiClient.post('http://localhost:5001/api/questions', {
-          topics, // Send topics as a combined string
-          difficulty, // Send difficulty as chosen by the user
+          topics,
+          difficulty,
           numberOfQuestions: 9
         });
         this.questions = response.data;
 
-        // Load the first question
         if (this.questions.length > 0) {
           this.currentQuestion = this.questions[this.currentQuestionIndex];
         } else {
@@ -68,11 +69,11 @@ export default {
       } catch (error) {
         console.error("Failed to fetch questions from backend:", error);
       } finally {
-        this.loading = false; // Stop loading once response is received
+        this.loading = false;
       }
     },
     startTimer() {
-      this.timeLeft = 10;
+      this.timeLeft = this.defaultTime;
       this.timer = setInterval(() => {
         if (this.timeLeft > 0) {
           this.timeLeft--;
@@ -160,11 +161,20 @@ export default {
   justify-content: center;
 }
 
+.answer-timer-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
 .answers {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin: 10px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
 }
 
 button {
@@ -176,9 +186,67 @@ button {
   background-color: #3498db;
   color: white;
   transition: background-color 0.2s ease;
+  position: relative;
+}
+
+button:nth-child(1)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 13px;
+  height: 13px;
+  background-color: #333;
+  border-top-left-radius: 150%;
+}
+
+button:nth-child(2)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 13px;
+  height: 13px;
+  background-color: #333;
+  border-top-right-radius: 150%;
+}
+
+button:nth-child(3)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 13px;
+  height: 13px;
+  background-color: #333;
+  border-bottom-left-radius: 120%;
+}
+
+button:nth-child(4)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 13px;
+  height: 13px;
+  background-color: #333;
+  border-bottom-right-radius: 120%;
 }
 
 button:hover {
   background-color: #2980b9;
+}
+
+.timer {
+  position: absolute;
+  bottom: 115px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #3498db;
+  text-align: center;
+
+  span {
+    text-align: center;
+  }
 }
 </style>
