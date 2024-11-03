@@ -50,7 +50,7 @@ export default {
     async fetchQuestionsFromBackend() {
       this.loading = true;
 
-      const { topic1, topic2, topic3, difficulty } = this.$route.query;
+      const {topic1, topic2, topic3, difficulty} = this.$route.query;
       const topics = [topic1, topic2, topic3].filter(Boolean).join(', ');
 
       try {
@@ -135,8 +135,12 @@ export default {
 
 /* Simple spinning animation for the loader */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .header {
@@ -153,12 +157,15 @@ export default {
 .question {
   font-size: 1.5rem;
   font-weight: bold;
-  margin: 20px 10px;
+  margin: 0 5px;
   text-align: center;
-  min-height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  h2 {
+    margin: 0;
+  }
 }
 
 .answer-timer-wrapper {
@@ -178,7 +185,7 @@ export default {
 }
 
 button {
-  padding: 3rem 0;
+  padding: clamp(10px, 4vw, 50px) 0;
   font-size: 1rem;
   border: 2px solid #333;
   border-radius: 5px;
@@ -239,7 +246,7 @@ button:hover {
 
 .timer {
   position: absolute;
-  bottom: 115px;
+  bottom: clamp(0px, 15vw, 120px);
   font-size: 2rem;
   font-weight: bold;
   color: #3498db;
