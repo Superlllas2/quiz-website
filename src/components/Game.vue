@@ -16,10 +16,11 @@
       <div class="answers">
         <button v-for="(option, index) in currentQuestion.options" :key="index" @click="selectAnswer(index)">
           {{ option }}
+          <!-- Only render the timer inside the first button using a span instead of div -->
+          <span v-if="index === 0" class="timer">
+            <span>{{ timeLeft }}</span>
+          </span>
         </button>
-      </div>
-      <div class="timer">
-        <span>{{ timeLeft }}</span>
       </div>
     </div>
   </div>
@@ -246,11 +247,15 @@ button:hover {
 
 .timer {
   position: absolute;
-  bottom: clamp(0px, 15vw, 120px);
-  font-size: 2rem;
+  top: 100%;
+  left: 100%;
+  transform: translate(-25%, -25%);
+  width: 1.6rem;
+  height: 1.6rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #3498db;
-  text-align: center;
+  z-index: 1;
 
   span {
     text-align: center;
