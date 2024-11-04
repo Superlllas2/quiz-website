@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { connectDB } from './db.js';
+import connectDB from './db.js';
 import questionsRoute from './routes/questionsRoute.js';
 import userRoutes from './routes/userRoutes.js';
 import protectedRoute from './routes/protectedRoute.js';
