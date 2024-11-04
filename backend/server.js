@@ -31,11 +31,11 @@ app.use('/api/protected', protectedRoute);
 
 // Serve static files from the frontend build directory (replace 'public' with your actual frontend build folder)
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, 'public'))); // Adjust 'public' if your folder has a different name
+app.use(express.static(path.join(__dirname, 'dist'))); // Adjust 'public' if your folder has a different name
 
 // Serve the main HTML file for all other routes (useful for single-page applications)
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust 'public/index.html' as needed
+    res.sendFile(path.join(__dirname, 'dist', 'index.html')); // Adjust 'public/index.html' as needed
 });
 
 app.listen(PORT, () => {
