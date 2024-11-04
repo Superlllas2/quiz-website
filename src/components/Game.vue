@@ -1,7 +1,7 @@
 <template>
   <div v-if="loading" class="loader">Loading...</div>
   <div class="wrapper" v-if="questions.length > 0">
-    <div class="header">
+    <div class="header-game">
       <span class="title">Question {{ currentQuestionNumber }}</span>
       <span class="score">Score: {{ totalScore }}</span>
     </div>
@@ -144,7 +144,7 @@ export default {
   }
 }
 
-.header {
+.header-game {
   width: 100%;
   display: flex;
   justify-content: space-between;
