@@ -27,6 +27,11 @@ app.use('/api/auth', userRoutes);
 app.use('/api', protectedRoute);
 app.use('/api/protected', protectedRoute);
 
+app.get('/', (req, res) => {
+    res.send('Welcome to the Quiz Website');
+});
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
