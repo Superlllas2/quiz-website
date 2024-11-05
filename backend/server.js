@@ -23,7 +23,7 @@ if (process.env.MODE === 'development') {
     console.log("Cors is in dev")
 } else if (process.env.MODE === 'production') {
     app.use(cors({
-        origin: 'https://questnest-fd5edf2051c1.herokuapp.com/' // Allow only the frontend origin in production
+        origin: 'https://questnest-fd5edf2051c1.herokuapp.com' // Allow only the frontend origin in production
     }));
     console.log("Cors is in prod")
 }
