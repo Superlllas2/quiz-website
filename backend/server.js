@@ -21,17 +21,11 @@ if (process.env.MODE === 'development') {
     app.use(cors()); // Allow all origins in development
     console.log("CORS is in dev mode");
 } else if (process.env.MODE === 'production') {
-    app.use((req, res, next) => {
-        console.log("Request Origin:", req.get('origin'));
-        next();
-    });
-    app.use(cors({
-        origin: 'https://questnest-fd5edf2051c1.herokuapp.com'
-    }));
+    app.use(cors({ origin: 'https://questnest-fd5edf2051c1.herokuapp.com' }));
     console.log("CORS is in production mode");
 }
 
-app.options('*', cors()); // Allow preflight requests for all routes
+app.options('*', cors({ origin: 'https://questnest-fd5edf2051c1.herokuapp.com' }));
 
 app.listen(3000, function () {
     console.log('CORS-enabled web server is listening on port 3000');
