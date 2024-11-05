@@ -30,6 +30,7 @@ if (process.env.MODE === 'development') {
     }));
     console.log("Cors is in prod")
 }
+app.options('*', cors());
 
 // Middleware to parse JSON
 app.use(express.json());
