@@ -25,6 +25,8 @@ if (process.env.MODE === 'development') {
     console.log("CORS is in production mode");
 }
 
+app.options('*', cors()); // Allow preflight requests for all routes
+
 app.listen(3000, function () {
     console.log('CORS-enabled web server is listening on port 3000');
 });
