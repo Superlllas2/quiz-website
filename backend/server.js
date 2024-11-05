@@ -18,7 +18,7 @@ connectDB()
     .catch((error) => console.error('MongoDB connection failed:', error));
 
 // Enable CORS
-app.use(cors());
+app.use(cors({ origin: 'https://questnest-d5e1b2fbeab1.herokuapp.com' }));
 
 // Middleware to parse JSON
 app.use(express.json());
