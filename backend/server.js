@@ -17,8 +17,16 @@ connectDB()
     .then(() => console.log('MongoDB connection successful'))
     .catch((error) => console.error('MongoDB connection failed:', error));
 
-// Enable CORS
-app.use(cors());
+// Enable CORS conditionally
+if (process.env.MODE === 'development') {
+    app.use(cors()); // Allow all origins in development
+    console.log("Cors is in dev")
+} else if (process.env.MODE === 'production') {
+    app.use(cors({
+        origin: 'https://questnest-d5e1b2fbeab1.herokuapp.com' // Allow only the frontend origin in production
+    }));
+    console.log("Cors is in prod")
+}
 
 // Middleware to parse JSON
 app.use(express.json());
