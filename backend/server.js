@@ -21,13 +21,13 @@ if (process.env.MODE === 'development') {
     app.use(cors()); // Allow all origins in development
     console.log("CORS is in dev mode");
 } else if (process.env.MODE === 'production') {
-    app.use(cors({
-        origin: '*', // Allow only the frontend origin in production
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Define allowed methods
-        allowedHeaders: ['Content-Type', 'Authorization'], // Define allowed headers
-    }));
+    app.use(cors({origin: '*' }));
     console.log("CORS is in production mode");
 }
+
+app.listen(3000, function () {
+    console.log('CORS-enabled web server is listening on port 3000');
+});
 
 // Middleware to parse JSON
 app.use(express.json());
