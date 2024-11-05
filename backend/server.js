@@ -7,7 +7,7 @@ import questionsRoute from './routes/questionsRoute.js';
 import userRoutes from './routes/userRoutes.js';
 import protectedRoute from './routes/protectedRoute.js';
 
-dotenv.config({ path: './backend/.env' });
+dotenv.config({ path: './.env' });
 
 const app = express();
 const PORT = process.env.PORT || 5001;
