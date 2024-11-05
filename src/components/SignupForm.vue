@@ -32,7 +32,7 @@ export default {
       }
 
       try {
-        const response = await apiClient.post('auth/register', {
+        const response = await apiClient.post('/auth/register', {
           email: this.email,
           password: this.password,
         });
