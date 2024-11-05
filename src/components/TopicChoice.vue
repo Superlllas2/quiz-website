@@ -22,10 +22,12 @@ export default {
       this.topic1Valid = this.topic1.trim() !== ''; // Field is valid if not empty
       this.topic2Valid = this.topic2.trim() !== '';
       this.topic3Valid = this.topic3.trim() !== '';
+      const allValid = this.topic1Valid && this.topic2Valid && this.topic3Valid && this.selectedOption;
 
-      // Prevent form submission if any field is invalid
-      if (this.topic1Valid && this.topic2Valid && this.topic3Valid) {
+      if (allValid) {
         this.navigateToGame();
+      } else {
+        alert("Please fill in all topics and select a difficulty level.");
       }
     },
     navigateToGame() {
@@ -42,23 +44,27 @@ export default {
     },
     async fetchProtectedData() {
       try {
-        const token = localStorage.getItem('token');
-        const response = await apiClient.get('http://localhost:5001/api/protected/create', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        // Set up headers conditionally based on environment
+        const headers = {};
+
+        if (import.meta.env.MODE === 'production') {
+          const token = localStorage.getItem('token');
+          headers.Authorization = `Bearer ${token}`;
+        }
+
+        const response = await apiClient.get('/protected/create', { headers });
         console.log('Protected data:', response.data);
       } catch (error) {
         console.error('Failed to fetch protected data:', error);
       }
     }
+
   }
 }
 </script>
 
 <template>
-  <form>
+  <form @submit.prevent="checkFields">
     <h1 class="signUp">Choose topic</h1>
     <div class="field">
       <label>Topic 1</label>
@@ -76,7 +82,8 @@ export default {
     </div>
     <div class="field">
       <label for="dropdown">Difficulty:</label>
-      <select v-model="selectedOption" id="dropdown">
+      <select v-model="selectedOption" id="dropdown" required>
+        <option disabled value="">Select Difficulty</option>
         <option v-for="(option, index) in options" :key="index" :value="option">
           {{ option }}
         </option>
