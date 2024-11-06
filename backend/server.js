@@ -8,7 +8,6 @@ import userRoutes from './routes/userRoutes.js';
 import protectedRoute from './routes/protectedRoute.js';
 
 dotenv.config({ path: './.env' });
-
 const app = express();
 const PORT = process.env.PORT || 5001;
 
@@ -32,8 +31,8 @@ app.use(cors({origin:"*"}));
 
 app.use('/api/auth', (req, res, next) => {
     if (req.method === 'OPTIONS') {
-        // res.header('Access-Control-Allow-origin', 'POST, OPTIONS');
-        // res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.header('Access-Control-Allow-origin', 'POST, OPTIONS');
+        res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
         // res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         return res.sendStatus(200);
     }
@@ -52,6 +51,11 @@ app.use('/api/protected', protectedRoute);
 // Serve static files from the frontend build directory (replace 'public' with your actual frontend build folder)
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'dist'))); // Adjust 'public' if your folder has a different name
+
+
+app.get('/testLucas', (req, res) => {
+    res.send('success'); // Adjust 'public/index.html' as needed
+});
 
 // Serve the main HTML file for all other routes (useful for single-page applications)
 app.get('*', (req, res) => {

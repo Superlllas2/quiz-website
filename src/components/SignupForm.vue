@@ -32,10 +32,12 @@ export default {
       }
 
       try {
-        const response = await apiClient.post('/auth/register', {
-          email: this.email,
-          password: this.password,
-        });
+        // body
+        // {
+        //   email: this.email,
+        //       password: this.password,
+        // }
+        const response = await apiClient.get('/testLucas');
 
         if (response.data.message === "User registered successfully") {
           alert("Registration successful!");
