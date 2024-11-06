@@ -24,7 +24,7 @@ if (process.env.MODE === 'development') {
     console.log("CORS is in production mode");
 }
 
-app.use(cors({origin:"*"}));
+// app.use(cors({origin:"*"}));
 
 
 // app.options('*', cors());
@@ -54,11 +54,17 @@ app.use(express.static(path.join(__dirname, 'dist'))); // Adjust 'public' if you
 
 
 app.get('/testLucas', (req, res) => {
+    res.set(
+         'Access-Control-Allow-Origin', "*"
+    );
     res.send('success'); // Adjust 'public/index.html' as needed
 });
 
 // Serve the main HTML file for all other routes (useful for single-page applications)
 app.get('*', (req, res) => {
+
+
+
     res.sendFile(path.join(__dirname, 'dist', 'index.html')); // Adjust 'public/index.html' as needed
 });
 
