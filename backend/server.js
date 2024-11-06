@@ -10,7 +10,7 @@ import protectedRoute from './routes/protectedRoute.js';
 dotenv.config({ path: './.env' });
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+// const PORT = process.env.PORT || 5001;
 
 // Connect to MongoDB
 connectDB()
@@ -74,6 +74,8 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html')); // Adjust 'public/index.html' as needed
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+// });
+
+console.log(process.env.HEROKU_APP_NAME);
