@@ -25,7 +25,7 @@ if (process.env.MODE === 'development') {
     console.log("CORS is in production mode");
 }
 
-app.use(cors({ origin: '*' }));
+app.options('*', cors({origin: "*"})) // include before other routes
 
 
 // app.options('*', cors());
