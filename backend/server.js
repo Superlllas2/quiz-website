@@ -18,23 +18,20 @@ connectDB()
     .catch((error) => console.error('MongoDB connection failed:', error));
 
 if (process.env.MODE === 'development') {
-    app.use(cors()); // Allow all origins in development
-    console.log("CORS is in dev mode");
+    // app.use(cors()); // Allow all origins in development
+    // console.log("CORS is in dev mode");
 } else if (process.env.MODE === 'production') {
-    app.use(cors({ origin: 'https://questnest-fd5edf2051c1.herokuapp.com' }));
-    console.log("CORS is in production mode");
+    // app.use(cors({ origin: 'https://questnest-fd5edf2051c1.herokuapp.com' }));
+    // console.log("CORS is in production mode");
 }
 
-app.options('*', cors());
-
-app.use('/api/auth', (req, res, next) => {
-    if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        return res.sendStatus(200);
-    }
-    next();
-});
+app.use(
+    cors({
+        origin: true, // Allow all origins
+        credentials: true,
+    })
+);
+app.options("*", cors());
 
 // Middleware to parse JSON
 app.use(express.json());
