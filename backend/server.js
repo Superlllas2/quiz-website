@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path'; // Import path to serve static files properly
-import cors from 'cors';
+// import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './db.js';
 import questionsRoute from './routes/questionsRoute.js';
@@ -25,13 +25,36 @@ if (process.env.MODE === 'development') {
     // console.log("CORS is in production mode");
 }
 
-app.use(
-    cors({
-        origin: true, // Allow all origins
-        credentials: true,
-    })
-);
-app.options("*", cors());
+// app.use(
+//     cors({
+//         origin: true, // Allow all origins
+//         credentials: true,
+//     })
+// );
+// app.options("*", cors());
+
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "*")
+//     res.header(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested, Content-Type, Accept Authorization"
+//     )
+//     if (req.method === "OPTIONS") {
+//         res.header(
+//             "Access-Control-Allow-Methods",
+//             "POST, PUT, PATCH, GET, DELETE"
+//         )
+//         return res.status(200).json({})
+//     }
+//     next()
+// })
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+});
 
 // Middleware to parse JSON
 app.use(express.json());
