@@ -25,15 +25,16 @@ if (process.env.MODE === 'development') {
     console.log("CORS is in production mode");
 }
 
-app.options('*', cors({origin: "*"})) // include before other routes
+app.use(cors({origin:"*"}));
 
 
 // app.options('*', cors());
 
 app.use('/api/auth', (req, res, next) => {
     if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        // res.header('Access-Control-Allow-origin', 'POST, OPTIONS');
+        // res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        // res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         return res.sendStatus(200);
     }
     next();
