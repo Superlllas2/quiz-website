@@ -25,10 +25,15 @@ if (process.env.MODE === 'development') {
     console.log("CORS is in production mode");
 }
 
-app.options('*', cors({ origin: 'https://questnest-fd5edf2051c1.herokuapp.com' }));
+app.options('*', cors());
 
-app.listen(3000, function () {
-    console.log('CORS-enabled web server is listening on port 3000');
+app.use('/api/auth', (req, res, next) => {
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'POST, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return res.sendStatus(200);
+    }
+    next();
 });
 
 // Middleware to parse JSON
