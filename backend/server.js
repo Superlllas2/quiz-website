@@ -21,9 +21,12 @@ if (process.env.MODE === 'development') {
     app.use(cors({origin:'*'})); // Allow all origins in development
     console.log("CORS is in dev mode");
 } else if (process.env.MODE === 'production') {
-    app.use(cors({ origin: '*' }));
+    // app.use(cors({ origin: '*' }));
     console.log("CORS is in production mode");
 }
+
+app.use(cors({ origin: '*' }));
+
 
 // app.options('*', cors());
 
