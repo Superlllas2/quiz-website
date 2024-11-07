@@ -55,7 +55,7 @@ export default {
       const topics = [topic1, topic2, topic3].filter(Boolean).join(', ');
 
       try {
-        const response = await apiClient.post('api/questions', {
+        const response = await apiClient.post('questions', {
           topics,
           difficulty,
           numberOfQuestions: 9
