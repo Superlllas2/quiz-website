@@ -17,7 +17,7 @@ export default {
     <p class="text-home-page">Test your knowledge and compete against time!</p>
     <p class="text-home-page">Write topics you of your interest in any language</p>
     <p class="text-home-page">ChatGPT will create 9 questions about them!</p>
-    <p class="warning-home-page">Sometime answers may be incorrect, but that's chatgpt's fault :(</p>
+    <p class="warning-home-page">Sometime answers may be incorrect, but that's chatgpt's fault</p>
     <p class="text-home-page">This website still in development, apologies for any bugs</p>
     <button @click="navigateToAbout" class="home-page-button"> Click me</button>
   </div>
