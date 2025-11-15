@@ -114,7 +114,8 @@ function goToCreate() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-right: 0.5rem;
+  padding-right: 0.8rem;
+  padding-left: 1rem;
 }
 
 .answer-row {
