@@ -48,11 +48,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    const isDevelopment = import.meta.env.MODE === 'development';
     const isAuthenticated = !!localStorage.getItem('token'); // Check if a token is stored
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-    if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated && !isDevelopment) {
-        // Redirect to login if trying to access a protected route in production without being authenticated
+    if (requiresAuth && !isAuthenticated) {
+        // Redirect to log in if trying to access a protected route without being authenticated
         next('/login');
     } else {
         // Otherwise, proceed to the route
