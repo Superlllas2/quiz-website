@@ -37,6 +37,9 @@
 
 <script>
 import apiClient from '../../src/api.js'
+import { useQuizStore } from '@/stores/quizStore.js'
+
+const quizStore = useQuizStore();
 
 export default {
   data() {
@@ -57,7 +60,8 @@ export default {
       showFeedback: false,
       selectedAnswer: null,
       statusText: '',
-      statusTone: 'neutral'
+      statusTone: 'neutral',
+      answerLog: []
     };
   },
   computed: {
@@ -109,6 +113,7 @@ export default {
       this.statusText = 'Time is up!';
       this.statusTone = 'error';
       this.showFeedback = true;
+      this.recordAnswer({ selectedIndex: null, isCorrect: false });
       setTimeout(() => this.nextQuestion(), 1000);
     },
     selectAnswer(index) {
@@ -124,8 +129,21 @@ export default {
         this.statusText = 'Not quite-keep going!';
         this.statusTone = 'error';
       }
+      this.recordAnswer({ selectedIndex: index, isCorrect });
       this.showFeedback = true;
       setTimeout(() => this.nextQuestion(), 1200);
+    },
+    recordAnswer({ selectedIndex, isCorrect }) {
+      const userAnswerText =
+        selectedIndex !== null ? this.currentQuestion.options[selectedIndex] : null;
+      const correctAnswerText = this.currentQuestion.options[this.currentQuestion.answer_index] ?? '';
+
+      this.answerLog.push({
+        questionText: this.currentQuestion.question,
+        userAnswer: userAnswerText,
+        correctAnswer: correctAnswerText,
+        isCorrect
+      });
     },
     answerClass(index) {
       if (!this.showFeedback) return '';
@@ -141,8 +159,21 @@ export default {
         this.currentQuestionNumber++;
         this.startTimer();
       } else {
-        alert('Quiz complete! Your score is: ' + this.totalScore);
+        this.finishQuiz();
       }
+    },
+    finishQuiz() {
+      const totalQuestions = this.questions.length;
+      const correctAnswersCount = this.answerLog.filter((entry) => entry.isCorrect).length;
+
+      quizStore.lastResult = {
+        totalQuestions,
+        correctAnswersCount,
+        score: this.totalScore,
+        questions: this.answerLog.map((entry) => ({ ...entry }))
+      };
+
+      this.$router.push('/results');
     }
   },
   async mounted() {

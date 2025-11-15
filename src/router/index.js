@@ -6,6 +6,8 @@ import Game from "@/components/Game.vue";
 import TopicChoice from "@/components/TopicChoice.vue";
 import Login from "@/components/Login.vue"
 
+const ResultsView = () => import('@/views/ResultsView.vue');
+
 const routes = [
     {
         path: "/",
@@ -27,6 +29,11 @@ const routes = [
     {
         path: "/game",
         component: Game,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/results",
+        component: ResultsView,
         meta: { requiresAuth: true }
     }
     // {
