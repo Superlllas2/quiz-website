@@ -12,18 +12,12 @@ export default {
   },
   methods: {
     async checkLogin() {
-      // Validate email format
       const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
       this.emailValid = emailPattern.test(this.email);
-
-      // Validate password length
       this.passwordValid = this.password.length >= 6;
 
-      // If valid, attempt to log in
       if (this.emailValid && this.passwordValid) {
         await this.loginUser();
-      } else {
-        console.log("Form is not valid");
       }
     },
     async loginUser() {
@@ -33,12 +27,10 @@ export default {
           password: this.password,
         });
 
-
-        // Save token to localStorage
         localStorage.setItem('token', response.data.token);
 
         if (response.data.message === "Logged in successfully") {
-          this.$router.push('/create'); // Redirect to '/create' after login
+          this.$router.push('/create');
         }
       } catch (error) {
         console.error(error.response ? error.response.data.message : error.message);
@@ -50,95 +42,109 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="checkLogin">
-    <h1 class="login">Log In</h1>
-    <div class="field">
-      <label>Email:</label>
-      <input type="email" required v-model="email" :class="{ 'error': !emailValid }">
-    </div>
-    <div class="field">
-      <label>Password:</label>
-      <input type="password" required v-model="password" :class="{ 'error': !passwordValid }">
-    </div>
-    <div class="signUp">
-      <p>Don't have an account? <router-link to="/signup" class="signUp-link">Sign up</router-link></p>
-    </div>
-    <button type="submit">Log In</button>
-  </form>
+  <section class="auth-card">
+    <form @submit.prevent="checkLogin">
+      <p class="eyebrow">Welcome back</p>
+      <h1>Log in</h1>
+      <p class="subcopy">Access your saved streaks and keep the momentum going.</p>
+
+      <label class="input-field">
+        <span>Email</span>
+        <input type="email" required v-model="email" :class="{ 'error': !emailValid }" placeholder="you@example.com">
+        <small v-if="!emailValid">Please enter a valid email address.</small>
+      </label>
+
+      <label class="input-field">
+        <span>Password</span>
+        <input type="password" required v-model="password" :class="{ 'error': !passwordValid }" placeholder="••••••••">
+        <small v-if="!passwordValid">Minimum 6 characters.</small>
+      </label>
+
+      <button type="submit" class="primary">Log In</button>
+      <p class="subtle">Don’t have an account? <router-link to="/signup">Create one</router-link></p>
+    </form>
+  </section>
 </template>
 
-<style>
+<style scoped>
+.auth-card {
+  width: min(420px, 100%);
+  margin: 0 auto;
+}
+
 form {
   display: flex;
   flex-direction: column;
+  gap: 1.25rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.subcopy {
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.input-field span {
+  font-weight: 600;
+}
+
+input {
   width: 100%;
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  min-height: 400px;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+input:focus {
+  outline: 2px solid var(--accent);
 }
 
 .error {
-  border: 2px solid red;
-  border-radius: 0.2rem;
+  border-color: var(--error);
 }
 
-h1.login {
-  text-align: center;
-  font-size: 2rem;
-  margin-top: 40px;
+small {
+  color: var(--error);
 }
 
-.field label {
-  font-size: 1.2rem;
-}
-
-.field {
-  margin-bottom: 20px;
-}
-
-.field:nth-child(3) {
-  margin-bottom: 1rem;
-}
-
-.signUp {
-  text-align: center;
-  margin-bottom: 1rem;
-
-  p {
-    margin: 0;
-  }
-}
-
-.signUp-link {
-  color: #3498db;
-}
-
-.signUp-link:hover {
-  color: #2980b9;
-}
-
-input[type="email"],
-input[type="password"] {
+button.primary {
+  margin-top: 0.5rem;
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
   border: none;
-  border-radius: 5px;
-  background-color: #3498db;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  border-radius: 16px;
+  padding: 0.9rem 1rem;
+  font-weight: 600;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  color: #05060f;
+  box-shadow: 0 12px 20px rgba(12, 200, 255, 0.25);
 }
 
-button:hover {
-  background-color: #2980b9;
+.subtle {
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.subtle a {
+  color: var(--accent);
+  text-decoration: none;
 }
 </style>

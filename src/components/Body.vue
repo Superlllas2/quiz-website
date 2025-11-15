@@ -1,28 +1,40 @@
 <script>
-  export default{
-    name: 'Body',
-  }
+export default {
+  name: 'Body'
+}
 </script>
 
 <template>
-  <div class="body">
-    <slot></slot>
-  </div>
+  <main class="app-shell">
+    <section class="body">
+      <slot></slot>
+    </section>
+  </main>
 </template>
 
 <style scoped>
-  div.body {
-    max-width: 800px;
-    height: 80vh;
-    align-content: center;
-    margin: auto;
-    background-color: #333;
-    border-radius: 20px;
-    justify-content: center;
-    box-shadow: rgba(134, 134, 190, 0.25) 0 13px 27px -5px, rgba(0, 0, 0, 0.3) 0 8px 16px -8px;
-  }
+.app-shell {
+  width: 100%;
+  min-height: calc(100vh - 220px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 4rem) 1.5rem;
+}
 
-  div.body h1 {
-    text-align: center;
+.body {
+  width: min(960px, 100%);
+  background: var(--panel-surface);
+  border-radius: 32px;
+  padding: clamp(1.5rem, 4vw, 3.25rem);
+  box-shadow: 0 25px 60px rgba(10, 12, 28, 0.45);
+  border: 1px solid var(--panel-border);
+}
+
+@media (max-width: 640px) {
+  .body {
+    border-radius: 24px;
+    padding: 1.5rem;
   }
+}
 </style>

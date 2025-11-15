@@ -28,7 +28,7 @@ export default {
     },
     async registerUser() {
       if (!this.validateForm()) {
-        return; // If form validation fails, exit
+        return;
       }
 
       try {
@@ -39,7 +39,7 @@ export default {
 
         if (response.data.message === "User registered successfully") {
           alert("Registration successful!");
-          this.$router.push('/login'); // Redirect to '/login' after registration
+          this.$router.push('/login');
         }
       } catch (error) {
         console.error("Registration error:", error.response ? error.response.data.message : error.message);
@@ -51,114 +51,136 @@ export default {
 </script>
 
 <template>
-  <form @submit.prevent="registerUser"> <!-- Call registerUser directly -->
-    <h1 class="signUp">Sign up</h1>
-    <div class="field">
-      <label>Email:</label>
-      <input type="email" required v-model="email" :class="{ 'error': !emailValid }">
-    </div>
-    <div class="field">
-      <label>Password:</label>
-      <input type="password" required v-model="password" :class="{ 'error': !passwordValid }">
-    </div>
-    <div class="field">
-      <label>Confirm password:</label>
-      <input type="password" required v-model="repeatPassword" :class="{ 'error': !passwordsSame }">
-    </div>
-    <div class="signIn">
-      <p>Already have an account? <router-link to="/login" class="logIn-link">Log-in</router-link></p>
-    </div>
-    <div class="terms">
-      <input type="checkbox" v-model="termsAccepted" required>
-      <label>Accept terms and conditions</label>
-    </div>
-    <button type="submit">Sign Up</button>
-  </form>
+  <section class="auth-card">
+    <form @submit.prevent="registerUser">
+      <p class="eyebrow">Join the run</p>
+      <h1>Create account</h1>
+      <p class="subcopy">Spin up a custom quiz lobby in seconds.</p>
+
+      <label class="input-field">
+        <span>Email</span>
+        <input type="email" required v-model="email" :class="{ 'error': !emailValid }" placeholder="you@example.com">
+        <small v-if="!emailValid">Please enter a valid email.</small>
+      </label>
+
+      <div class="password-grid">
+        <label class="input-field">
+          <span>Password</span>
+          <input type="password" required v-model="password" :class="{ 'error': !passwordValid }" placeholder="••••••••">
+          <small v-if="!passwordValid">At least 6 characters.</small>
+        </label>
+
+        <label class="input-field">
+          <span>Confirm password</span>
+          <input type="password" required v-model="repeatPassword" :class="{ 'error': !passwordsSame }" placeholder="••••••••">
+          <small v-if="!passwordsSame">Passwords must match.</small>
+        </label>
+      </div>
+
+      <label class="terms">
+        <input type="checkbox" v-model="termsAccepted" required>
+        <span>I agree to the playful but serious terms.</span>
+      </label>
+
+      <button type="submit" class="primary">Sign Up</button>
+      <p class="subtle">Already have an account? <router-link to="/login">Log in</router-link></p>
+    </form>
+  </section>
 </template>
 
-<style>
+<style scoped>
+.auth-card {
+  width: min(480px, 100%);
+  margin: 0 auto;
+}
+
 form {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 400px; /* Optional: Set max width for better readability */
-  margin: auto;
-  padding: 20px;
-  min-height: 600px;
+  gap: 1.25rem;
 }
 
-.error {
-  border: 2px solid red;
-  border-radius: 0.2rem;
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
 }
 
-h1.signUp {
-  text-align: center;
+h1 {
+  margin: 0;
   font-size: 2rem;
-  margin-top: 40px;
 }
 
-.field label {
-  font-size: 1.2rem;
+.subcopy {
+  color: var(--text-muted);
 }
 
-.field {
-  margin-bottom: 20px;
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
-.field:nth-child(4) {
-  margin-bottom: 1rem;
+.input-field span {
+  font-weight: 600;
 }
 
-.logIn-link {
-  color: #3498db;
-}
-
-.logIn-link:hover {
-  color: #2980b9;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
+.password-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
 }
 
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
 }
 
-.signIn {
-  text-align: center;
-  margin-bottom: 1rem;
+input:focus {
+  outline: 2px solid var(--accent);
+}
 
-  p {
-    margin: 0;
-  }
+.error {
+  border-color: var(--error);
+}
+
+small {
+  color: var(--error);
 }
 
 .terms {
   display: flex;
+  gap: 0.75rem;
   align-items: center;
-  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
-button {
+button.primary {
   width: 100%;
-  padding: 10px;
-  font-size: 1rem;
   border: none;
-  border-radius: 5px;
-  background-color: #3498db;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  border-radius: 16px;
+  padding: 0.9rem 1rem;
+  font-weight: 600;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+  color: #05060f;
+  box-shadow: 0 12px 20px rgba(12, 200, 255, 0.25);
 }
 
-button:hover {
-  background-color: #2980b9;
+.subtle {
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.subtle a {
+  color: var(--accent);
+  text-decoration: none;
 }
 </style>
