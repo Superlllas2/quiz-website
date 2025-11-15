@@ -121,7 +121,7 @@ export default {
         this.statusText = '+10 pts! Nicely done.';
         this.statusTone = 'success';
       } else {
-        this.statusText = 'Not quite—keep going!';
+        this.statusText = 'Not quite-keep going!';
         this.statusTone = 'error';
       }
       this.showFeedback = true;
