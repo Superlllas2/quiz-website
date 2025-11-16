@@ -22,7 +22,7 @@
           <strong>{{ message.username || 'Anonymous' }}</strong>
           <small>{{ formatTimestamp(message.timestamp) }}</small>
         </div>
-        <p>{{ message.message }}</p>
+        <p class="message-text">{{ message.message }}</p>
       </div>
     </div>
 
@@ -104,6 +104,10 @@ h1 {
   display: block;
   margin-bottom: 0.25rem;
   font-weight: 600;
+}
+
+.message-text {
+  color: black;
 }
 
 .username input {
