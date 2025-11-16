@@ -1,7 +1,9 @@
 import { ref, onBeforeUnmount } from 'vue';
 import { io } from 'socket.io-client';
 
-const SOCKET_URL = import.meta?.env?.VITE_SOCKET_URL ?? 'http://localhost:5001';
+const SOCKET_URL = import.meta.env.PROD
+    ? 'https://quest-nest-backend-a0171c77d032.herokuapp.com'
+    : (import.meta.env.VITE_SOCKET_URL ?? 'http://localhost:5001');
 
 export function useChatSocket() {
   const socket = io(SOCKET_URL, {
