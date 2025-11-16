@@ -176,9 +176,10 @@ export default {
       const totalQuestions = this.questions.length;
       const correctAnswersCount = this.answerLog.filter((entry) => entry.isCorrect).length;
       const timeTakenSeconds = this.quizStartTimestamp
-        ? Math.round((Date.now() - this.quizStartTimestamp) / 1000)
-        : null;
+          ? Math.round((Date.now() - this.quizStartTimestamp) / 1000)
+          : 0; // backend expects a number >= 0
 
+      // This stays for your local UI (ResultsView)
       quizStore.lastResult = {
         totalQuestions,
         correctAnswersCount,
@@ -189,14 +190,27 @@ export default {
         timeTakenSeconds
       };
 
-      this.persistQuizResult({
+      // Normalize difficulty for backend enum
+      const allowedDifficulties = ['Friendly', 'Easy', 'Intermediate', 'Hard', 'Immortal'];
+      const normalizedDifficulty = allowedDifficulties.includes(this.selectedDifficulty)
+          ? this.selectedDifficulty
+          : undefined;
+
+      const payload = {
         topics: this.selectedTopics,
-        difficulty: this.selectedDifficulty,
-        totalQuestions,
-        correctAnswersCount,
-        score: this.totalScore,
-        timeTakenSeconds
-      });
+        numberOfQuestions: totalQuestions,
+        correctCount: correctAnswersCount,
+        totalTimeSeconds: timeTakenSeconds,
+        // let Mongoose auto-compute accuracy via pre('save')
+        visibility: 'public',
+        status: 'completed'
+      };
+
+      if (normalizedDifficulty) {
+        payload.difficulty = normalizedDifficulty;
+      }
+
+      this.persistQuizResult(payload);
 
       this.$router.push('/results');
     },

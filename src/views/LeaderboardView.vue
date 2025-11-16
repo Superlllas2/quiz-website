@@ -31,8 +31,8 @@
           <td>#{{ index + 1 }}</td>
           <td>{{ entry.user?.email || 'Unknown' }}</td>
           <td>{{ formatAccuracy(entry) }}%</td>
-          <td>{{ entry.correctAnswersCount ?? 0 }}</td>
-          <td>{{ entry.totalQuestions ?? 0 }}</td>
+          <td>{{ entry.correctCount ?? 0 }}</td>
+          <td>{{ entry.numberOfQuestions ?? 0 }}</td>
         </tr>
       </tbody>
     </table>
@@ -50,7 +50,7 @@ const limit = 10;
 
 const formatAccuracy = (entry) => {
   if (typeof entry.accuracy === 'number') {
-    return entry.accuracy.toFixed(1);
+    return (entry.accuracy * 100).toFixed(1);
   }
   const total = entry.totalQuestions ?? 0;
   const correct = entry.correctAnswersCount ?? 0;
