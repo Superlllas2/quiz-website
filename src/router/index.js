@@ -7,6 +7,7 @@ import TopicChoice from "@/components/TopicChoice.vue";
 import Login from "@/components/Login.vue"
 
 const ResultsView = () => import('@/views/ResultsView.vue');
+const LeaderboardView = () => import('@/views/LeaderboardView.vue');
 
 const routes = [
     {
@@ -35,6 +36,10 @@ const routes = [
         path: "/results",
         component: ResultsView,
         meta: { requiresAuth: true }
+    },
+    {
+        path: "/leaderboard",
+        component: LeaderboardView
     }
     // {
     //     path: '*',

@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import apiClient from '../../src/api.js'
+import apiClient, { saveQuizResult } from '../../src/api.js'
 import { useQuizStore } from '@/stores/quizStore.js'
 
 const quizStore = useQuizStore();
@@ -61,7 +61,11 @@ export default {
       selectedAnswer: null,
       statusText: '',
       statusTone: 'neutral',
-      answerLog: []
+      answerLog: [],
+      quizStartTimestamp: null,
+      selectedTopics: [],
+      selectedDifficulty: 'Unknown',
+      hasSubmittedResult: false
     };
   },
   computed: {
@@ -74,8 +78,11 @@ export default {
     async fetchQuestionsFromBackend() {
       this.loading = true;
 
-      const {topic1, topic2, topic3, difficulty} = this.$route.query;
-      const topics = [topic1, topic2, topic3].filter(Boolean).join(', ');
+      const { topic1, topic2, topic3, difficulty } = this.$route.query;
+      const topicValues = [topic1, topic2, topic3].filter(Boolean);
+      const topics = topicValues.join(', ');
+      this.selectedTopics = topicValues;
+      this.selectedDifficulty = difficulty || 'Unknown';
 
       try {
         const response = await apiClient.post('questions', {
@@ -100,6 +107,9 @@ export default {
       this.selectedAnswer = null;
       this.statusText = '';
       this.statusTone = 'neutral';
+      if (!this.quizStartTimestamp) {
+        this.quizStartTimestamp = Date.now();
+      }
       this.timer = setInterval(() => {
         if (this.timeLeft > 0) {
           this.timeLeft--;
@@ -165,15 +175,39 @@ export default {
     finishQuiz() {
       const totalQuestions = this.questions.length;
       const correctAnswersCount = this.answerLog.filter((entry) => entry.isCorrect).length;
+      const timeTakenSeconds = this.quizStartTimestamp
+        ? Math.round((Date.now() - this.quizStartTimestamp) / 1000)
+        : null;
 
       quizStore.lastResult = {
         totalQuestions,
         correctAnswersCount,
         score: this.totalScore,
-        questions: this.answerLog.map((entry) => ({ ...entry }))
+        questions: this.answerLog.map((entry) => ({ ...entry })),
+        topics: [...this.selectedTopics],
+        difficulty: this.selectedDifficulty,
+        timeTakenSeconds
       };
 
+      this.persistQuizResult({
+        topics: this.selectedTopics,
+        difficulty: this.selectedDifficulty,
+        totalQuestions,
+        correctAnswersCount,
+        score: this.totalScore,
+        timeTakenSeconds
+      });
+
       this.$router.push('/results');
+    },
+    async persistQuizResult(summary) {
+      if (this.hasSubmittedResult) return;
+      this.hasSubmittedResult = true;
+      try {
+        await saveQuizResult(summary);
+      } catch (error) {
+        console.error('Failed to save quiz result:', error);
+      }
     }
   },
   async mounted() {
