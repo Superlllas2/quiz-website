@@ -14,6 +14,7 @@ export default {
     <nav class="main-nav" aria-label="Primary">
       <router-link to="/" class="nav-link">Home</router-link>
       <router-link to="/leaderboard" class="nav-link">Leaderboard</router-link>
+      <router-link to="/lobby" class="nav-link">Lobby</router-link>
       <router-link to="/login" class="nav-link">Login</router-link>
       <router-link to="/signup" class="nav-link">Sign up</router-link>
     </nav>

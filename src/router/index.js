@@ -8,6 +8,7 @@ import Login from "@/components/Login.vue"
 
 const ResultsView = () => import('@/views/ResultsView.vue');
 const LeaderboardView = () => import('@/views/LeaderboardView.vue');
+const LobbyView = () => import('@/views/LobbyView.vue');
 
 const routes = [
     {
@@ -37,9 +38,14 @@ const routes = [
         component: ResultsView,
         meta: { requiresAuth: true }
     },
-    {
+    {  
         path: "/leaderboard",
         component: LeaderboardView
+    },
+    {
+        path: "/lobby",
+        name: "lobby",
+        component: LobbyView
     }
     // {
     //     path: '*',
