@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: "https://quest-nest-backend-a0171c77d032.herokuapp.com/api",
+    baseURL: import.meta.env.VITE_API_BASE_URL,
     headers: {
         'Content-Type': 'application/json'
     }
